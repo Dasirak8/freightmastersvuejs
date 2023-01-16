@@ -39,7 +39,8 @@ export default {
         localStorage.setItem('accessToken', response.data.accessToken)
         localStorage.setItem('tokenType', response.data.tokenType)
 
-        localStorage.getItem('accessToken')
+
+        this.$router.push(this.$router.fullPath);
 
 
       } catch (error) {

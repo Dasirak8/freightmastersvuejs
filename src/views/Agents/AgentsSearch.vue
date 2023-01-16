@@ -12,10 +12,15 @@
 </template>
 
 <script>
+import AuthService from "@/service/AuthService";
 import $ from 'jquery'
 export default {
   name: "AgentsSearch",
   mounted () {
+    if (!(AuthService.isAuthenticated())) {
+      // logic here
+      this.$router.push(`/login`)
+    }
     $("#inpt_search")
         .on('focus', function () {
       $(this).parent('label').addClass('active');

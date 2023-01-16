@@ -22,9 +22,14 @@
 <script>
 import axios from 'axios'
 import { ref } from 'vue'
+import router from "@/router/index";
 
 export default {
   name: "Login",
+  beforeRouteEnter(to, from, next) {
+    sessionStorage.setItem('redirectedFrom', from.fullPath)
+    next()
+  },
   setup() {
     const username = ref('')
     const password = ref('')
@@ -39,12 +44,10 @@ export default {
         localStorage.setItem('accessToken', response.data.accessToken)
         localStorage.setItem('tokenType', response.data.tokenType)
 
-
-        this.$router.push(this.$router.fullPath);
-
+        await router.push(sessionStorage.getItem('redirectedFrom'))
 
       } catch (error) {
-        window.location.reload()
+        console.log(error)
       }
     }
     return {

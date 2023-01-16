@@ -14,12 +14,13 @@
 <script>
 import AuthService from "@/service/AuthService";
 import $ from 'jquery'
+import router from "@/router/index";
 export default {
   name: "AgentsSearch",
   mounted () {
     if (!(AuthService.isAuthenticated())) {
       // logic here
-      this.$router.push(`/login`)
+      router.push(`/login`)
     }
     $("#inpt_search")
         .on('focus', function () {
@@ -32,14 +33,14 @@ export default {
 
     /// On submit
     $(".submit_search").on('click', function () {
-      var searchString = $("#inpt_search").val();
+      let searchString = $("#inpt_search").val();
       window.location.replace("/agents/list?params=" + searchString);
 
 
     });
 
 
-    var input = document.getElementById("inpt_search");
+    let input = document.getElementById("inpt_search");
     input.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
         event.preventDefault();
@@ -88,8 +89,8 @@ p {
   height: 35px;
   width: 35px;
   box-sizing: border-box;
-  margin: 0px 8px 7px 0px;
-  padding: 7px 9px 0px 9px;
+  margin: 0 8px 7px 0;
+  padding: 7px 9px 0 9px;
   border: 3px solid #232e57;
   border-radius: 25px;
   transition: all 300ms ease;
@@ -110,21 +111,21 @@ p {
 .search.active,
 .search:hover {
   width: 300px;
-  margin-right: 0px;
+  margin-right: 0;
 }
 .search.active:after,
 .search:hover:after {
-  height: 0px;
+  height: 0;
 }
 .search input {
   width: 100%;
   border: none;
   box-sizing: border-box;
-  font-family: Helvetica;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 15px;
   color: inherit;
   background: transparent;
-  outline-width: 0px;
+  outline-width: 0;
   align-items: center;
   padding-top: 0;
   padding-bottom: 0;
@@ -151,7 +152,7 @@ p {
   background-color: #fff;
   border: none;
   border-radius: 45px;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
@@ -159,7 +160,7 @@ p {
 
 .button:hover {
   background-color: #232e57;
-  box-shadow: 0px 15px 20px #0f152b66;
+  box-shadow: 0 15px 20px #0f152b66;
   color: #fff;
   transform: translateY(-7px);
 }

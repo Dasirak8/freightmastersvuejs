@@ -22,7 +22,8 @@
 <script>
 import axios from 'axios'
 import { ref } from 'vue'
-import router from "@/router/index";
+// import router from "@/router/index";
+import AuthService from "@/service/AuthService";
 
 export default {
   name: "Login",
@@ -43,8 +44,8 @@ export default {
 
         localStorage.setItem('accessToken', response.data.accessToken)
         localStorage.setItem('tokenType', response.data.tokenType)
-
-        await router.push(sessionStorage.getItem('redirectedFrom'))
+        AuthService.getAndStoreUserRoles(username.value, password.value,)
+        // await router.push(sessionStorage.getItem('redirectedFrom'))
 
       } catch (error) {
         console.log(error)

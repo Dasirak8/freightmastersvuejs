@@ -18,9 +18,15 @@ import router from "@/router/index";
 export default {
   name: "AgentsSearch",
   mounted () {
+    let allowedRoles = ["ROLE_ADMIN", "ROLE_MANAGER" , "ROLE_OPERATOR" , "ROLE_FINANCE"]
     if (!(AuthService.isAuthenticated())) {
       // logic here
       router.push(`/login`)
+    }
+    else {
+      if (!(AuthService.getAndStoreUserRoles())) {
+        router.push(`/403`)
+      }
     }
     $("#inpt_search")
         .on('focus', function () {

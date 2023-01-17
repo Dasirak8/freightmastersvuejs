@@ -47,7 +47,10 @@ export default {
   },
   async created() {
     try {
-      await axios.get('http://localhost:8081/api/agents-by-params?params=' + this.$route.query.params)
+      await axios.get('http://localhost:8081/api/agents-by-params?params=' + this.$route.query.params,{
+        headers: {
+          'Authorization': localStorage.getItem('tokenType') + ' ' + localStorage.getItem('accessToken')
+      }})
           .then(response => {
             this.agentList = response.data
           })

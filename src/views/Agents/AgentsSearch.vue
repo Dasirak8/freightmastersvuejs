@@ -15,19 +15,24 @@
 import AuthService from "@/service/AuthService";
 import $ from 'jquery'
 import router from "@/router/index";
+
 export default {
   name: "AgentsSearch",
-  mounted () {
-    let allowedRoles = ["ROLE_ADMIN", "ROLE_MANAGER" , "ROLE_OPERATOR" , "ROLE_FINANCE"]
-    if (!(AuthService.isAuthenticated())) {
-      // logic here
-      router.push(`/login`)
-    }
-    else {
-      if (!(AuthService.getAndStoreUserRoles())) {
-        router.push(`/403`)
+  beforeCreate() {
+    if (!AuthService.isAuthenticated()) {
+      router.push('/login')
+    } else{
+      // Get user roles from local storage
+      const userRoles = JSON.parse(localStorage.getItem('userRoles'));
+      // Check if user has necessary role for the route
+      if (!userRoles.some(role => role === 'ROLE_ADMIN' || 'ROLE_MANAGER' || 'ROLE_OPERATOR' || 'ROLE_FINANCE')) {
+        // Redirect to 403 page
+        router.push('/403');
       }
     }
+  },
+  mounted () {
+
     $("#inpt_search")
         .on('focus', function () {
       $(this).parent('label').addClass('active');

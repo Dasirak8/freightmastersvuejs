@@ -47,17 +47,14 @@ export default {
   },
   async created() {
     try {
-      await axios.get('http://localhost:8081/api/agents-by-params?params=' + this.$route.query.params,{
-        headers: {
-          'Authorization': localStorage.getItem('tokenType') + ' ' + localStorage.getItem('accessToken')
-      }})
+      await axios.get('http://localhost:8081/api/agents-by-params?params=' + this.$route.query.params)
           .then(response => {
             this.agentList = response.data
           })
 
 
     } catch (error) {
-      window.location.reload()
+      this.$router.push('/agents/search')
     }
   },
 }
@@ -68,7 +65,6 @@ export default {
   padding: 16px 16px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;

@@ -22,8 +22,7 @@
 <script>
 import axios from 'axios'
 import { ref } from 'vue'
-// import router from "@/router/index";
-import AuthService from "@/service/AuthService";
+import router from "@/router/index";
 
 export default {
   name: "Login",
@@ -42,13 +41,16 @@ export default {
           password: password.value
         })
 
+        localStorage.setItem('userRoles', JSON.stringify(response.data.roles))
         localStorage.setItem('accessToken', response.data.accessToken)
-        localStorage.setItem('tokenType', response.data.tokenType)
-        AuthService.getAndStoreUserRoles(username.value, password.value,)
-        // await router.push(sessionStorage.getItem('redirectedFrom'))
+
+        await router.push(sessionStorage.getItem('redirectedFrom'))
+
+        sessionStorage.removeItem('redirectedFrom')
 
       } catch (error) {
-        console.log(error)
+        document.getElementById("password").value = "";
+        alert("Wrong username or password")
       }
     }
     return {

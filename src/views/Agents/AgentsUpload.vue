@@ -1,24 +1,19 @@
 <template>
   <div class="agentsupload">
-    <form method="POST" enctype="multipart/form-data" action="http://localhost:8081/upload">
-      <div>
-      <input type="file" ref="fileInput" @change="setFile"/>>
-      <p>Drag your files here or click in this area.</p>
-      <br>
-        <button @click="uploadFile">Upload</button>
-      </div>
+    <form method="POST" enctype="multipart/form-data" action="http://localhost:8081/agentsupload">
+      <input type="file" @change="uploadFile"/>
+      <p id="formP">Drag your files here or click in this area.</p>
     </form>
   </div>
 </template>
 
 <script>
 import $ from 'jquery'
-import AuthService from "@/service/AuthService";
+import axios from "axios";
 import router from "@/router";
-import axios from 'axios';
-
+import AuthService from "@/service/AuthService";
 export default {
-  name: "AgentsUpload",
+  name: "agentsupload",
   beforeCreate() {
     if (!AuthService.isAuthenticated()) {
       router.push('/login')
@@ -32,32 +27,40 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      file: null
+    }
+  },
   methods: {
-    setFile(e) {
-      this.file = e.target.files[0]
-    },
     async uploadFile() {
-
-      const formData = new FormData()
-      formData.append('file', this.file)
-
-      const options = {
-        headers: {
-          'Authorization': 'Bearer' + localStorage.getItem('accessToken')
-        }}
-
+      this.file = event.target.files[0]
+      // make sure a file is selected
+      if (!this.file) {
+        return;
+      }
+      // create a new FormData object
+      const formData = new FormData();
+      // add the file to the form data
+      formData.append('file', this.file);
       try {
-        const res = await axios.post('http://localhost:8081/upload', formData, options)
-        console.log(res.data)
-      } catch (err) {
-        console.error(err)
+        // send the file to the server
+        const response = await axios.post('http://localhost:8081/api/agents/upload', formData);
+        console.log(response);
+        document.getElementById("formP").innerHTML = "File uploaded successfully";
+        setTimeout(() => { router.push("/agents/search")}, 2500);
+      } catch (error) {
+        console.error(error);
+        document.getElementById("formP").innerHTML = "File upload failed";
+        setTimeout(() => { document.getElementById("formP").innerHTML = "Drag your files here or click in this area."; }, 5000);
+
       }
     }
   },
   mounted(){
     $(document).ready(function(){
       $('form input').change(function () {
-        $('form p').text("You successfully selected a document.");
+        $('form p').text("Your documents is uploading, please wait!");
       });
     });
   }
@@ -89,9 +92,13 @@ form p{
   width: 100%;
   height: 100%;
   text-align: center;
-  line-height: 170px;
+  line-height: 24px;
   color: #ffffff;
-  font-family: Arial;
+  font-family: Arial,sans-serif;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  display: flex;
 }
 form input{
   position: absolute;

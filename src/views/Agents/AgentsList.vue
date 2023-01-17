@@ -37,9 +37,24 @@
 
 <script>
 import axios from "axios";
+import AuthService from "@/service/AuthService";
+import router from "@/router";
 
 export default {
   name: "AgentsList",
+  beforeCreate() {
+    if (!AuthService.isAuthenticated()) {
+      router.push('/login')
+    } else{
+      // Get user roles from local storage
+      const userRoles = JSON.parse(localStorage.getItem('userRoles'));
+      // Check if user has necessary role for the route
+      if (!userRoles.some(role => role === 'ROLE_ADMIN' || 'ROLE_MANAGER' || 'ROLE_OPERATOR' || 'ROLE_FINANCE')) {
+        // Redirect to 403 page
+        router.push('/403');
+      }
+    }
+  },
   data() {
     return {
       agentList: []
@@ -47,7 +62,7 @@ export default {
   },
   async created() {
     try {
-      await axios.get('http://localhost:8081/api/agents-by-params?params=' + this.$route.query.params)
+      await axios.get('http://localhost:8081/api/agents/agents-by-params?params=' + this.$route.query.params)
           .then(response => {
             this.agentList = response.data
           })

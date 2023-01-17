@@ -23,8 +23,15 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import router from "@/router/index";
+import AuthService from "@/service/AuthService";
 
 export default {
+  beforeCreate() {
+    if (AuthService.isAuthenticated()) {
+      localStorage.removeItem('userRoles');
+      localStorage.removeItem('accessToken');
+    }
+  },
   name: "Login",
   beforeRouteEnter(to, from, next) {
     sessionStorage.setItem('redirectedFrom', from.fullPath)

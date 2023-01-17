@@ -5,10 +5,7 @@
         <label style="margin-bottom: 32px" class="search" for="inpt_search">
           <input name="searchParams" id="inpt_search" type="text"/>
         </label><br>
-<!--        <button class="button submit_search" id="submitBtn">-->
-<!--          Submit-->
-<!--        </button>-->
-          <router-link to="/agents/list?params=" + inpt_search class="nav-link"> Search </router-link>
+        <button class="button submit_search" id="submitBtn">Submit</button>
       </div>
     </div>
   </div>
@@ -46,12 +43,10 @@ export default {
         });
 
     /// On submit
-    // $(".submit_search").on('click', function () {
-    //   let searchString = $("#inpt_search").val();
-    //   window.location.replace("/agents/list?params=" + searchString);
-    //
-    //
-    // });
+     $(".submit_search").on('click', function () {
+       let searchString = $("#inpt_search").val();
+       window.location.replace("/agents/list?params=" + searchString);
+});
 
 
     let input = document.getElementById("inpt_search");
@@ -78,9 +73,6 @@ export default {
   color: #232e57;
   max-height: 100%;
   height: 100%;
-}
-html,body {
-
 }
 p {
   margin-top: 30px;

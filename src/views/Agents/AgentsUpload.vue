@@ -1,18 +1,59 @@
 <template>
   <div class="agentsupload">
-    <form method="POST" enctype="multipart/form-data" action="http://localhost:8081/agentsupload">
-      <input type="file">
+    <form method="POST" enctype="multipart/form-data" action="http://localhost:8081/upload">
+      <div>
+      <input type="file" ref="fileInput" @change="setFile"/>>
       <p>Drag your files here or click in this area.</p>
       <br>
-      <button type="submit">Upload</button>
+        <button @click="uploadFile">Upload</button>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
 import $ from 'jquery'
+import AuthService from "@/service/AuthService";
+import router from "@/router";
+import axios from 'axios';
+
 export default {
-  name: "agentsupload",
+  name: "AgentsUpload",
+  beforeCreate() {
+    if (!AuthService.isAuthenticated()) {
+      router.push('/login')
+    } else{
+      // Get user roles from local storage
+      const userRoles = JSON.parse(localStorage.getItem('userRoles'));
+      // Check if user has necessary role for the route
+      if (!userRoles.some(role => role === 'ROLE_ADMIN')) {
+        // Redirect to 403 page
+        router.push('/403');
+      }
+    }
+  },
+  methods: {
+    setFile(e) {
+      this.file = e.target.files[0]
+    },
+    async uploadFile() {
+
+      const formData = new FormData()
+      formData.append('file', this.file)
+
+      const options = {
+        headers: {
+          'Authorization': 'Bearer' + localStorage.getItem('accessToken')
+        }}
+
+      try {
+        const res = await axios.post('http://localhost:8081/upload', formData, options)
+        console.log(res.data)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  },
   mounted(){
     $(document).ready(function(){
       $('form input').change(function () {

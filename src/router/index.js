@@ -6,6 +6,7 @@ import AgentsUpload from "@/views/Agents/AgentsUpload.vue";
 import Error403 from "@/views/Errors/Error403.vue";
 import AgentsList from "@/views/Agents/AgentsList.vue";
 import Error404 from "@/views/Errors/Error404.vue";
+import SearchLog from "@/views/Agents/SearchLog.vue";
 
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
     path: "/agents/upload",
     name: "AgentsUpload",
     component: AgentsUpload,
+  },
+  {
+    path: "/agents/log",
+    name: "SearchLog",
+    component: SearchLog,
   },
   {
     path: "/agents/list",

@@ -5,7 +5,10 @@
         <label style="margin-bottom: 32px" class="search" for="inpt_search">
           <input name="searchParams" id="inpt_search" type="text"/>
         </label><br>
-        <button class="button submit_search" id="submitBtn">Submit</button>
+<!--        <button class="button submit_search" id="submitBtn">-->
+<!--          Submit-->
+<!--        </button>-->
+          <router-link to="/agents/list?params=" + inpt_search class="nav-link"> Search </router-link>
       </div>
     </div>
   </div>
@@ -43,12 +46,12 @@ export default {
         });
 
     /// On submit
-    $(".submit_search").on('click', function () {
-      let searchString = $("#inpt_search").val();
-      window.location.replace("/agents/list?params=" + searchString);
-
-
-    });
+    // $(".submit_search").on('click', function () {
+    //   let searchString = $("#inpt_search").val();
+    //   window.location.replace("/agents/list?params=" + searchString);
+    //
+    //
+    // });
 
 
     let input = document.getElementById("inpt_search");

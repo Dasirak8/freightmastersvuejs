@@ -1,8 +1,8 @@
 // auth.js
 import jwtDecode from 'jwt-decode'
-//import axios from "axios";
+import axios from "axios";
 
-//axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken');
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken');
 
 const AuthService = {
     isAuthenticated() {
